@@ -462,7 +462,7 @@
                 // 使用 call 绑定上下文，并尝试更长的震动时间 (200ms) 以确保感知
                 // 部分 Android 浏览器对短震动可能会忽略
                 try {
-                    vibrate.call(navigator, [200]);
+                    vibrate.call(navigator, [100]);
                 } catch (e) {
                     // 忽略不支持的情况
                 }
