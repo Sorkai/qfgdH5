@@ -455,10 +455,17 @@
         }
 
         function triggerHaptic() {
-            // 检测是否支持 Vibration API (注意：iOS Safari 原生不支持此 API)
-            if (typeof navigator.vibrate === 'function') {
-                // 增加震动时长到 80ms，使其在 Android 设备上更明显
-                navigator.vibrate(80);
+            // 尝试兼容旧版浏览器 API
+            const vibrate = navigator.vibrate || navigator.webkitVibrate || navigator.mozVibrate || navigator.msVibrate;
+
+            if (vibrate) {
+                // 使用 call 绑定上下文，并尝试更长的震动时间 (200ms) 以确保感知
+                // 部分 Android 浏览器对短震动可能会忽略
+                try {
+                    vibrate.call(navigator, [200]);
+                } catch (e) {
+                    // 忽略不支持的情况
+                }
             }
         }
 
