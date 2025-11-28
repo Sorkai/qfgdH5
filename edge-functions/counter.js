@@ -12,6 +12,9 @@ export async function onRequest({ request, env }) {
     try {
         // 绑定变量名为 visitCount
         const kv = env.visitCount;
+        if (!kv) {
+            throw new Error("KV Namespace 'visitCount' not bound. Please configure it in EdgeOne Console.");
+        }
         const KEY = "visitCount";
 
         let countStr = await kv.get(KEY);
