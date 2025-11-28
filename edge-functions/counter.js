@@ -10,12 +10,14 @@ export async function onRequest({ request, env }) {
     }
 
     try {
-        // 绑定变量名为 visitCount
-        const kv = env.visitCount;
+        // 尝试从 env 中获取，或者尝试全局变量（兼容某些旧版本或特定配置）
+        // 注意：官方示例中有时直接使用全局变量名
+        const kv = env.visitCount || (globalThis.visitCount);
+
         if (!kv) {
-            // 调试辅助：打印出当前所有可用的环境变量 key
-            const availableKeys = Object.keys(env).join(", ");
-            throw new Error(`KV Namespace 'visitCount' not bound. Available bindings: [${availableKeys}]. Please configure it in EdgeOne Console -> Pages -> Settings -> Functions.`);
+            // 调试辅助：打印出当前所有可用的环境变量 key 以及全局变量中疑似 KV 的内容
+            const envKeys = Object.keys(env).join(", ");
+            throw new Error(`KV Namespace 'visitCount' not bound. env keys: [${envKeys}]. Please configure it in EdgeOne Console.`);
         }
         const KEY = "visitCount";
 
