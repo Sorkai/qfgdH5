@@ -13,7 +13,9 @@ export async function onRequest({ request, env }) {
         // 绑定变量名为 visitCount
         const kv = env.visitCount;
         if (!kv) {
-            throw new Error("KV Namespace 'visitCount' not bound. Please configure it in EdgeOne Console.");
+            // 调试辅助：打印出当前所有可用的环境变量 key
+            const availableKeys = Object.keys(env).join(", ");
+            throw new Error(`KV Namespace 'visitCount' not bound. Available bindings: [${availableKeys}]. Please configure it in EdgeOne Console -> Pages -> Settings -> Functions.`);
         }
         const KEY = "visitCount";
 
